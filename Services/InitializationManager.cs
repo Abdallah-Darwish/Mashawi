@@ -20,14 +20,12 @@ namespace Mashawi.Services
     {
         private readonly AppDbContext _dbContext;
         private readonly AppOptions _appOptions;
-        private readonly RegnewManager _regnewManager;
         private readonly IServiceProvider _serviceProvider;
 
         public InitializationManager(AppDbContext dbContext, IOptions<AppOptions> appOptions, RegnewManager regnewManager, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _appOptions = appOptions.Value;
-            _regnewManager = regnewManager;
             _serviceProvider = serviceProvider;
         }
 
@@ -35,9 +33,7 @@ namespace Mashawi.Services
         {
             var dirs = new[]
             {
-                UserFileManager.SaveDirectory,
-                GroupFileManager.SaveDirectory,
-                MessageFileManager.SaveDirectory
+                BookFileManager.SaveDirectory,
             };
             foreach (var dir in dirs)
             {
@@ -112,30 +108,31 @@ namespace Mashawi.Services
             Message.CreateSeed(seedingContext);
             MessageDeliveryInfo.CreateSeed(seedingContext);
 
-            await _dbContext.Pings.AddRangeAsync(seedingContext.Pings).ConfigureAwait(false);
+            await _dbContext.Authors.AddRangeAsync(seedingContext.Authors).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            await _dbContext.Groups.AddRangeAsync(seedingContext.Groups.Where(g => !existingGroupsIds.Contains(g.Id))).ConfigureAwait(false);
+            await _dbContext.OrdersAddresses.AddRangeAsync(seedingContext.OrdersAddresses).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            await _dbContext.GroupsMembers.AddRangeAsync(seedingContext.GroupsMembers.Where(g => !existingGroupsMembersIds.Contains(g.Id))).ConfigureAwait(false);
+            await _dbContext.Books.AddRangeAsync(seedingContext.Books).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            await _dbContext.Conversations.AddRangeAsync(seedingContext.Conversations.Where(c => !existingConversationsIds.Contains(c.Id))).ConfigureAwait(false);
+            await _dbContext.Users.AddRangeAsync(seedingContext.Users).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            await _dbContext.DirectConversationsMembers.AddRangeAsync(seedingContext.DirectConversationMembers).ConfigureAwait(false);
+            await _dbContext.Orders.AddRangeAsync(seedingContext.Orders).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            await _dbContext.Messages.AddRangeAsync(seedingContext.Messages).ConfigureAwait(false);
+            await _dbContext.OrdersItems.AddRangeAsync(seedingContext.OrdersItems).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            await _dbContext.MessagesDeliveryInfo.AddRangeAsync(seedingContext.MessagesDeliveryInfo).ConfigureAwait(false);
+            await _dbContext.CartsItems.AddRangeAsync(seedingContext.CartsItems).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            await User.CreateSeedFiles(seedingContext, _serviceProvider).ConfigureAwait(false);
-            await Group.CreateSeedFiles(seedingContext, _serviceProvider).ConfigureAwait(false);
-            await Message.CreateSeedFiles(seedingContext, _serviceProvider).ConfigureAwait(false);
+            await _dbContext.WhishListItems.AddRangeAsync(seedingContext.WhishListItems).ConfigureAwait(false);
+            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+
+            await Book.CreateSeedFiles(_serviceProvider, seedingContext).ConfigureAwait(false);
 
             List<string> tablesNames = new();
 

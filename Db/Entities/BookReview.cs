@@ -31,4 +31,27 @@ public class BookReview
             .IsRequired();
         b.HasCheckConstraint($"CK_{nameof(BookReview)}_{nameof(Rating)}", $"\"{nameof(Rating)}\" >= 0 AND {nameof(Rating)} <= 5");
     }
+    public static void CreateSeed(SeedingContext ctx)
+    {
+        Random rand = new();
+        var users = ctx.Users.ToArray();
+        foreach (var book in ctx.Books)
+        {
+            int reviewCount = rand.Next(users.Length);
+            book.RatersCount += reviewCount;
+            for (int i = 0; i < reviewCount; i++)
+            {
+                BookReview review = new()
+                {
+                    BookId = book.Id,
+                    Content = rand.NextText(),
+                    Rating = rand.Next(6),
+                    UserId = rand.NextElementAndSwap(users, users.Length - (i + 1)).Id,
+                    Id = ctx.BooksReviews.Count + 1
+                };
+                book.RatingSum += review.Rating;
+                ctx.BooksReviews.Add(review);
+            }
+        }
+    }
 }

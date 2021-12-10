@@ -13,4 +13,9 @@ public class Author
             .IsUnicode()
             .IsRequired();
     }
+
+    public static void CreateSeed(SeedingContext ctx)
+    {
+
+    }
 }

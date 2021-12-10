@@ -26,4 +26,8 @@ public class OrderAddress
         b.Property(s => s.FlatNumber)
             .IsRequired();
     }
+    public static void CreateSeed(SeedingContext ctx)
+    {
+
+    }
 }

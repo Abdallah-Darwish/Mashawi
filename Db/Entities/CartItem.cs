@@ -28,4 +28,24 @@ public class CartItem
 
         b.HasCheckConstraint($"CK_{nameof(CartItem)}_{nameof(Quantity)}", $"\"{nameof(Quantity)}\" >= 1");
     }
+    public static void CreateSeed(SeedingContext ctx)
+    {
+        Random rand = new();
+        var books = ctx.Books.ToArray();
+        foreach (var user in ctx.Users)
+        {
+            int itemsCount = rand.Next(books.Length);
+            for (int i = 0; i < itemsCount; i++)
+            {
+                CartItem item = new()
+                {
+                    BookId = rand.NextElementAndSwap(books, books.Length - (i + 1)).Id,
+                    CustomerId = user.Id,
+                    Quantity = rand.Next(1, 5),
+                    Id = ctx.CartsItems.Count + 1,
+                };
+                ctx.CartsItems.Add(item);
+            }
+        }
+    }
 }

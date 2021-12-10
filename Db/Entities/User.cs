@@ -1,3 +1,4 @@
+using Mashawi.Services.UserSystem;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -50,5 +51,48 @@ public class User
             .HasConversion<byte>();
         b.HasIndex(s => new { s.Email })
             .IsUnique();
+    }
+    public static void CreateSeed(SeedingContext ctx)
+    {
+        Random rand = new();
+        var firstNames = new string[]
+        {
+            "Abdallah", "Hashim", "Shatha", "Jannah", "Malik", "Basel", "Al-Bara", "Mohammad", "Aya", "Issra",
+            "Huda", "Tuqa", "Deema"
+        };
+        var lastNames = new string[]
+        {
+            "Darwish", "Al-Mansour", "Shreim", "Barqawi", "Arabiat", "Azaizeh", "Zeer", "Faroun", "Abu-Rumman",
+            "Allan", "Odeh"
+        };
+        for (char i = 'a'; i <= 'z'; i++)
+        {
+            OrderAddress address = new()
+            {
+                Id = ctx.OrdersAddresses.Count + 1,
+                BuildingNumber = rand.Next(1, 100),
+                FlatNumber = rand.Next(1, 100),
+                City = rand.NextText(rand.Next(1, 10)),
+                Neighborhood = rand.NextText(rand.Next(1, 10)),
+                Street = rand.NextText(rand.Next(1, 10)),
+            };
+            User user = new()
+            {
+                Id = ctx.Users.Count + 1,
+                Email = $"{i}@{i}.com",
+                Name = $"{rand.NextElement(firstNames)} {rand.NextElement(lastNames)}",
+                Phone = rand.NextNumber(10),
+                PasswordHash = UserManager.HashPassword(".123456789a"),
+                AddressId = address.Id,
+                Role = UserRole.Customer
+            };
+            ctx.Users.Add(user);
+            ctx.OrdersAddresses.Add(address);
+        }
+        for (int i = 0, e = 5; i < ctx.Users.Count && e > 0; i++)
+        {
+            ctx.Users[i].Role = UserRole.Admin;
+            e--;
+        }
     }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "BIeLkxLfoOCUW5ATz+/i+5U3+4niF3SkZDmuAO4oj9kSpEtgjzLnvsKRvo7aCHbRCVKnNI398yoVZuDwyEYRqw==",
+  "dgSpecHash": "iEYVXinKhMkKXYHiW7P0QsfAxe0gUwXfrq3k/WIc7BhVzPrkwyNWLkCrFCzdguw2yV96uiL6uamaHqYCleuXyA==",
   "success": true,
   "projectFilePath": "/home/abdallah/mashawi/mashawi.csproj",
   "expectedPackageFiles": [
@@ -32,12 +32,14 @@
     "/home/abdallah/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
     "/home/abdallah/.nuget/packages/npgsql/6.0.1/npgsql.6.0.1.nupkg.sha512",
     "/home/abdallah/.nuget/packages/npgsql.entityframeworkcore.postgresql/6.0.1/npgsql.entityframeworkcore.postgresql.6.0.1.nupkg.sha512",
+    "/home/abdallah/.nuget/packages/skiasharp/2.80.3/skiasharp.2.80.3.nupkg.sha512",
     "/home/abdallah/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "/home/abdallah/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "/home/abdallah/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.2.3/swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
     "/home/abdallah/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.2.3/swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
     "/home/abdallah/.nuget/packages/system.collections.immutable/6.0.0/system.collections.immutable.6.0.0.nupkg.sha512",
     "/home/abdallah/.nuget/packages/system.diagnostics.diagnosticsource/6.0.0/system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
+    "/home/abdallah/.nuget/packages/system.memory/4.5.3/system.memory.4.5.3.nupkg.sha512",
     "/home/abdallah/.nuget/packages/system.reflection.emit/4.7.0/system.reflection.emit.4.7.0.nupkg.sha512",
     "/home/abdallah/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],

@@ -23,4 +23,23 @@ public class WishListItem
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
     }
+    public static void CreateSeed(SeedingContext ctx)
+    {
+        Random rand = new();
+        var books = ctx.Books.ToArray();
+        foreach (var user in ctx.Users)
+        {
+            int itemsCount = rand.Next(books.Length);
+            for (int i = 0; i < itemsCount; i++)
+            {
+                WishListItem item = new()
+                {
+                    BookId = rand.NextElementAndSwap(books, books.Length - (i + 1)).Id,
+                    CustomerId = user.Id,
+                    Id = ctx.WhishListItems.Count + 1,
+                };
+                ctx.WhishListItems.Add(item);
+            }
+        }
+    }
 }

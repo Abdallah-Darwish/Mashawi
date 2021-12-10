@@ -75,6 +75,9 @@ public class BookReviewController : ControllerBase
             Rating = dto.Rating
         };
         await _dbContext.BooksReviews.AddAsync(entity).ConfigureAwait(false);
+        var book = await _dbContext.Books.FindAsync(dto.BookId).ConfigureAwait(false);
+        book.RatersCount++;
+        book.RatingSum += dto.Rating;
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return CreatedAtAction(nameof(Get), new { ids = new int[] { entity.Id } }, _mapper.Map<BookReviewDto>(entity));
     }
@@ -84,7 +87,7 @@ public class BookReviewController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete([FromBody] int[] ids)
     {
-        var reviews = _dbContext.BooksReviews.AsQueryable();
+        var reviews = _dbContext.BooksReviews.Include(r => r.Book).AsQueryable();
 
         var existingReviews = reviews.Where(a => ids.Contains(a.Id));
         var nonExistingReviews = ids.Except(existingReviews.Select(a => a.Id)).ToArray();
@@ -117,6 +120,11 @@ public class BookReviewController : ControllerBase
                 });
             }
         }
+        foreach (var r in existingReviews)
+        {
+            r.Book.RatingSum -= r.Rating;
+            r.Book.RatersCount--;
+        }
         _dbContext.BooksReviews.RemoveRange(existingReviews);
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return NoContent();
@@ -133,6 +141,8 @@ public class BookReviewController : ControllerBase
         }
         if (update.Rating != null)
         {
+            var book = await _dbContext.Books.FindAsync(review.Book.Id).ConfigureAwait(false);
+            book.RatingSum += update.Rating.Value - review.Rating;
             review.Rating = update.Rating.Value;
         }
 
