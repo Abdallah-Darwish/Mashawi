@@ -64,7 +64,7 @@ public class AuthorController : ControllerBase
         };
         await _dbContext.Authors.AddAsync(entity).ConfigureAwait(false);
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-        return Ok(_mapper.Map<AuthorDto>(entity));
+        return CreatedAtAction(nameof(Get), new { ids = new int[] { entity.Id } }, _mapper.Map<AuthorDto>(entity));
     }
     [AdminFilter]
     [HttpDelete("Delete")]

@@ -122,7 +122,15 @@ namespace Mashawi.Services.UserSystem
                 Name = name,
                 PasswordHash = HashPassword(password),
                 Token = null,
-                Phone = phone
+                Phone = phone,
+                Address = new()
+                {
+                    BuildingNumber = 0,
+                    City = "",
+                    FlatNumber = 0,
+                    Neighborhood = "",
+                    Street = ""
+                }
             };
             await _dbContext.Users.AddAsync(user).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);

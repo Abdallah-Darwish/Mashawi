@@ -3,6 +3,7 @@ using Mashawi.Db;
 using Mashawi.Dto.Users;
 using Mashawi.Services.UserSystem;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mashawi.Controllers;
 [ApiController]
@@ -47,6 +48,31 @@ public class UserController : ControllerBase
     {
         var user = await _dbContext.Users.FindAsync(update.Id).ConfigureAwait(false);
         await _userManager.UpdateUser(user.Id, update.Password, update.Name, user.IsAdmin ? update.Role : null, update.Phone).ConfigureAwait(false);
+
+        if (update.Address != null)
+        {
+            if (update.Address.BuildingNumber != null)
+            {
+                user.Address.BuildingNumber = update.Address.BuildingNumber.Value;
+            }
+            if (update.Address.City != null)
+            {
+                user.Address.City = update.Address.City;
+            }
+            if (update.Address.FlatNumber != null)
+            {
+                user.Address.FlatNumber = update.Address.FlatNumber.Value;
+            }
+            if (update.Address.Neighborhood != null)
+            {
+                user.Address.Neighborhood = update.Address.Neighborhood;
+            }
+            if (update.Address.Street != null)
+            {
+                user.Address.Street = update.Address.Street;
+            }
+        }
+        await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return Ok();
     }
 
@@ -70,7 +96,10 @@ public class UserController : ControllerBase
             return Unauthorized("Invalid login credentials.");
         }
 
-        var user = await _dbContext.Users.FindAsync(userId).ConfigureAwait(false);
+        var user = await _dbContext.Users
+            .Include(u => u.Address)
+            .FirstAsync(u => u.Id == userId)
+            .ConfigureAwait(false);
         LoginResultDto result = new()
         {
             User = _mapper.Map<UserDto>(user),
@@ -99,7 +128,11 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<UserDto>> GetLoggedIn()
     {
-        var user = this.GetUser()!;
+        var loggedInUser = this.GetUser()!;
+        var user = await _dbContext.Users
+            .Include(u => u.Address)
+            .FirstAsync(u => u.Id == loggedInUser.Id)
+            .ConfigureAwait(false);
         return Ok(_mapper.Map<UserDto>(user));
     }
 }

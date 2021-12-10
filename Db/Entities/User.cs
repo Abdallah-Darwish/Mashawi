@@ -42,8 +42,8 @@ public class User
            .IsUnicode();
         b.HasOne(s => s.Address)
             .WithOne()
-            .HasForeignKey<User>(s => s.AddressId)
             .IsRequired()
+            .HasForeignKey<User>(s => s.AddressId)
             .OnDelete(DeleteBehavior.Cascade);
         b.Property(s => s.Role)
             .IsRequired()
