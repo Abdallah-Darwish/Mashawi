@@ -1,0 +1,30 @@
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Mashawi-Dockerfile
+            args:
+                HostUserId: '#HostUserId#'
+                HostGroupId: '#HostGroupId#'
+        depends_on:
+            - db
+        ports:
+            - 1234:1234
+        networks:
+            - mashawi_network
+        volumes:
+            - '#BackendHostDataDirectory#:/app/data/'
+
+    db:
+        image: postgres
+        environment:
+            POSTGRES_PASSWORD: "mashawi_app"
+            POSTGRES_USER: "mashawi_app"
+            POSTGRES_DB: "postgres"
+        expose:
+            - 5432
+        networks:
+            - mashawi_network
+
+networks:
+    mashawi_network: null

@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 using SkiaSharp;
 
 namespace Mashawi.Services;
-public abstract class BookFileManager
+public class BookFileManager
 {
     public static string SaveDirectory { get; private set; }
 
@@ -15,8 +15,7 @@ public abstract class BookFileManager
             Directory.CreateDirectory(SaveDirectory);
         }
     }
-    protected virtual string GetEntityFileName(int bookId) => bookId.ToString();
-    public string GetBookFilePath(int bookId) => Path.Combine(SaveDirectory, GetEntityFileName(bookId));
+    public string GetBookFilePath(int bookId) => Path.Combine(SaveDirectory, $"{bookId}.jpg");
 
     public async Task SaveFile(int bookId, Stream content)
     {

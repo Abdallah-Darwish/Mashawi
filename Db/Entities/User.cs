@@ -39,7 +39,6 @@ public class User
             .IsRequired()
             .IsUnicode();
         b.Property(s => s.Token)
-           .IsRequired()
            .IsUnicode();
         b.HasOne(s => s.Address)
             .WithOne()

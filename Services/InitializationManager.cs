@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Mashawi.Db;
-using Mashawi;
-using Mashawi.Services.FilesManagers;
 using Mashawi.Resources;
 using System.Reflection;
 using System.Linq;
@@ -22,7 +20,7 @@ namespace Mashawi.Services
         private readonly AppOptions _appOptions;
         private readonly IServiceProvider _serviceProvider;
 
-        public InitializationManager(AppDbContext dbContext, IOptions<AppOptions> appOptions, RegnewManager regnewManager, IServiceProvider serviceProvider)
+        public InitializationManager(AppDbContext dbContext, IOptions<AppOptions> appOptions, IServiceProvider serviceProvider)
         {
             _dbContext = dbContext;
             _appOptions = appOptions.Value;
@@ -82,31 +80,23 @@ namespace Mashawi.Services
                 await RecreateDb().ConfigureAwait(false);
             }
         }
-        /// <summary>
-        /// Depends on regnew mock.
-        /// </summary>
+
         private async Task Seed()
         {
             _dbContext.ChangeTracker.Clear();
             await _dbContext.Database.CloseConnectionAsync().ConfigureAwait(false);
             NpgsqlConnection.ClearAllPools();
 
-            await _regnewManager.PatchDb().ConfigureAwait(false);
             SeedingContext seedingContext = new();
-            seedingContext.Users.AddRange(_dbContext.Users.ToArray());
-            seedingContext.Groups.AddRange(_dbContext.Groups.ToArray());
-            seedingContext.GroupsMembers.AddRange(_dbContext.GroupsMembers.ToArray());
-            seedingContext.Sections.AddRange(_dbContext.Sections.ToArray());
-            seedingContext.Courses.AddRange(_dbContext.Courses.ToArray());
-            var existingGroupsIds = seedingContext.Groups.Select(g => g.Id).ToHashSet();
-            var existingGroupsMembersIds = seedingContext.GroupsMembers.Select(g => g.Id).ToHashSet();
-            var existingConversationsIds = seedingContext.Conversations.Select(g => g.Id).ToHashSet();
-            Ping.CreateSeed(seedingContext);
-            Group.CreateSeed(seedingContext);
-            GroupMember.CreateSeed(seedingContext);
-            Conversation.CreateSeed(seedingContext);
-            Message.CreateSeed(seedingContext);
-            MessageDeliveryInfo.CreateSeed(seedingContext);
+
+            Author.CreateSeed(seedingContext);
+            OrderAddress.CreateSeed(seedingContext);
+            Book.CreateSeed(seedingContext);
+            User.CreateSeed(seedingContext);
+            Order.CreateSeed(seedingContext);
+            OrderItem.CreateSeed(seedingContext);
+            CartItem.CreateSeed(seedingContext);
+            WishListItem.CreateSeed(seedingContext);
 
             await _dbContext.Authors.AddRangeAsync(seedingContext.Authors).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
@@ -175,7 +165,7 @@ namespace Mashawi.Services
                             .DefinedTypes
                             .Where(t => !t.IsGenericType)
                             .Select(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static)
-                                          .FirstOrDefault(m => m.Name == nameof(UserFileManager.Init)))
+                                          .FirstOrDefault(m => m.Name == nameof(BookFileManager.Init)))
                             .Where(m => m != null);
             var initializationMethodParams = new object[] { _serviceProvider };
             foreach (var initMethod in initializationMethods)

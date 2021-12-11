@@ -2,9 +2,7 @@ using Mashawi.Db.Entities;
 using Mashawi.Dto.Authors;
 
 namespace Mashawi.Dto.Books;
-/// <summary>
-/// Results will be ordered by InStock Rating PublishDate 
-/// </summary>
+public enum BookSortingAttribute { MostSelling, Rating, PublishDate }
 public class BookSearchFilterDto
 {
     public string? IsbnMask { get; set; }
@@ -22,6 +20,7 @@ public class BookSearchFilterDto
     public int? MinStock { get; set; }
     public int? MaxStock { get; set; }
     public bool OnlyInStock { get; set; }
+    public BookSortingAttribute[]? SortingMethod { get; set; }
     public int Offset { get; set; }
     public int Count { get; set; }
 }

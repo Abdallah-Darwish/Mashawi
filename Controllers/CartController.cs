@@ -135,6 +135,8 @@ public class CartController : ControllerBase
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return NoContent();
     }
+    [LoggedInFilter]
+    [HttpPatch("Update")]
     public async Task<IActionResult> Update([FromBody] UpdateCartItemDto update)
     {
         var item = await _dbContext.CartsItems.FindAsync(update.Id).ConfigureAwait(false);

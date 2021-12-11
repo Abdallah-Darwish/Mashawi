@@ -29,7 +29,7 @@ public class BookReview
             .IsUnicode();
         b.Property(s => s.Rating)
             .IsRequired();
-        b.HasCheckConstraint($"CK_{nameof(BookReview)}_{nameof(Rating)}", $"\"{nameof(Rating)}\" >= 0 AND {nameof(Rating)} <= 5");
+        b.HasCheckConstraint($"CK_{nameof(BookReview)}_{nameof(Rating)}", $"\"{nameof(Rating)}\" >= 0 AND \"{nameof(Rating)}\" <= 5");
     }
     public static void CreateSeed(SeedingContext ctx)
     {

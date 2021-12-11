@@ -36,6 +36,7 @@ public class OrderController : ControllerBase
             .ConfigureAwait(false);
         return Ok(orders);
     }
+    [LoggedInFilter]
     [HttpPost("Get")]
     [ProducesResponseType(typeof(ErrorDto), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(OrderDto[]), StatusCodes.Status200OK)]
@@ -95,7 +96,7 @@ public class OrderController : ControllerBase
 
         Order entity = new()
         {
-            CreationDate = DateTime.Now,
+            CreationDate = DateTime.UtcNow.Date,
             CustomerId = user.Id,
             Items = cart.Select(i =>
             new OrderItem
@@ -117,6 +118,12 @@ public class OrderController : ControllerBase
 
         await _dbContext.Orders.AddAsync(entity).ConfigureAwait(false);
         _dbContext.CartsItems.RemoveRange(cart);
+        foreach (var i in entity.Items)
+        {
+            var book = await _dbContext.Books.FindAsync(i.BookId).ConfigureAwait(false);
+            book.Sold += i.Quantity;
+            book.Stock -= i.Quantity;
+        }
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return CreatedAtAction(nameof(Get), new { ids = new int[] { entity.Id }, metadata = false }, _mapper.Map<OrderDto>(entity));
     }

@@ -389,6 +389,36 @@
           }
         }
       },
+      "SkiaSharp.NativeAssets.Linux/2.80.3": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp": "2.80.3"
+        },
+        "compile": {
+          "lib/netstandard1.3/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard1.3/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-arm/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "linux-arm"
+          },
+          "runtimes/linux-arm64/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "linux-arm64"
+          },
+          "runtimes/linux-musl-x64/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "linux-musl-x64"
+          },
+          "runtimes/linux-x64/native/libSkiaSharp.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.2.3": {
         "type": "package",
         "dependencies": {
@@ -1180,6 +1210,27 @@
         "skiasharp.nuspec"
       ]
     },
+    "SkiaSharp.NativeAssets.Linux/2.80.3": {
+      "sha512": "LYl/mvEXrsKMdDNPVjA4ul8JDDGZI8DIkFE0a5GdhaC/aooxgwjuaXZ9NfPg4cJsRf8tb6VhGHvjSNUngNOcJw==",
+      "type": "package",
+      "path": "skiasharp.nativeassets.linux/2.80.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "THIRD-PARTY-NOTICES.txt",
+        "build/net462/SkiaSharp.NativeAssets.Linux.targets",
+        "buildTransitive/net462/SkiaSharp.NativeAssets.Linux.targets",
+        "lib/net462/_._",
+        "lib/netstandard1.3/_._",
+        "runtimes/linux-arm/native/libSkiaSharp.so",
+        "runtimes/linux-arm64/native/libSkiaSharp.so",
+        "runtimes/linux-musl-x64/native/libSkiaSharp.so",
+        "runtimes/linux-x64/native/libSkiaSharp.so",
+        "skiasharp.nativeassets.linux.2.80.3.nupkg.sha512",
+        "skiasharp.nativeassets.linux.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore/6.2.3": {
       "sha512": "cnzQDn0Le+hInsw2SYwlOhOCPXpYi/szcvnyqZJ12v+QyrLBwAmWXBg6RIyHB18s/mLeywC+Rg2O9ndz0IUNYQ==",
       "type": "package",
@@ -1418,6 +1469,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 6.0.0",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 6.0.1",
       "SkiaSharp >= 2.80.3",
+      "SkiaSharp.NativeAssets.Linux >= 2.80.3",
       "Swashbuckle.AspNetCore >= 6.2.3"
     ]
   },
@@ -1481,6 +1533,10 @@
             "version": "[6.0.1, )"
           },
           "SkiaSharp": {
+            "target": "Package",
+            "version": "[2.80.3, )"
+          },
+          "SkiaSharp.NativeAssets.Linux": {
             "target": "Package",
             "version": "[2.80.3, )"
           },

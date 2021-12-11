@@ -1,0 +1,28 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk as nuget
+COPY ./mashawi.csproj /src/Mashawi/
+
+RUN dotnet restore "/src/Mashawi/mashawi.csproj"
+
+FROM nuget as publish
+
+COPY ./ /src/Mashawi/
+RUN dotnet publish "/src/Mashawi/mashawi.csproj" -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet as final
+ENV IS_DOCKER=TRUE
+ENV ASPNETCORE_ENVIRONMENT="Development"
+RUN apt-get update && \
+    apt-get install -y \
+    fontconfig && \
+    rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+ARG HostUserId
+ARG HostGroupId
+RUN addgroup --gid $HostGroupId nonroot
+RUN adduser --disabled-password --gecos '' --uid $HostUserId --gid $HostGroupId nonroot
+USER nonroot
+
+COPY --from=publish /app/publish/ .
+EXPOSE 1234
+ENTRYPOINT ["dotnet", "mashawi.dll"]

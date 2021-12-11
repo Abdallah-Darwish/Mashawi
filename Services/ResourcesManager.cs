@@ -5,7 +5,7 @@ namespace Mashawi.Resources
 {
     public static class AppResourcesManager
     {
-        private static readonly string AssemblyName = "Mashawi.Resources.";
+        private static readonly string AssemblyName = "mashawi.Resources.";
 
         public static Stream GetStream(string name)
         {

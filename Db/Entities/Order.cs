@@ -52,7 +52,7 @@ public class Order
                 };
                 Order order = new()
                 {
-                    CreationDate = DateTime.Now - TimeSpan.FromDays(rand.Next(1, 300)),
+                    CreationDate = DateTime.UtcNow - TimeSpan.FromDays(rand.Next(1, 300)),
                     CustomerId = user.Id,
                     Id = ctx.Orders.Count + 1,
                     ShippingAddressId = address.Id

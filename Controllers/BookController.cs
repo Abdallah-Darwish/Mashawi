@@ -7,6 +7,7 @@ using Mashawi.Dto.Books;
 using Mashawi.Dto.BooksReviews;
 using Mashawi.Dto.Carts;
 using Mashawi.Dto.WishList;
+using Mashawi.Services;
 using Mashawi.Services.UserSystem;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +20,12 @@ public class BookController : ControllerBase
 {
     private readonly AppDbContext _dbContext;
     private readonly IMapper _mapper;
-    public BookController(AppDbContext dbContext, IMapper mapper)
+    private readonly BookFileManager _bookFileManager;
+    public BookController(AppDbContext dbContext, IMapper mapper, BookFileManager bookFileManager)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _bookFileManager = bookFileManager;
     }
     [HttpPost("GetAll")]
     [ProducesResponseType(typeof(int[]), StatusCodes.Status200OK)]
@@ -80,7 +83,7 @@ public class BookController : ControllerBase
             IsUsed = dto.IsUsed,
             Language = dto.Language,
             Price = dto.Price,
-            PublishDate = dto.PublishDate,
+            PublishDate = dto.PublishDate.Date.ToUniversalTime(),
             RatersCount = 0,
             RatingSum = 0,
             Title = dto.Title,
@@ -114,6 +117,8 @@ public class BookController : ControllerBase
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return NoContent();
     }
+    [AdminFilter]
+    [HttpPatch("Update")]
     public async Task<IActionResult> Update([FromBody] UpdateBookDto update)
     {
         var book = await _dbContext.Books.FindAsync(update.Id).ConfigureAwait(false);
@@ -157,6 +162,7 @@ public class BookController : ControllerBase
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return NoContent();
     }
+    [HttpPost("Search")]
     public async Task<ActionResult<int[]>> Search([FromBody] BookSearchFilterDto filter)
     {
         var books = _dbContext.Books.AsQueryable();
@@ -216,10 +222,47 @@ public class BookController : ControllerBase
         {
             books = books.Where(b => b.RatersCount <= filter.MaxRating);
         }
-        books = books
-            .OrderBy(b => b.Stock > 0 ? 1 : 0)
-            .ThenBy(b => b.Rating)
-            .ThenBy(b => b.PublishDate);
+        if ((filter.SortingMethod?.Length ?? 0) > 0)
+        {
+            var orderedBooks = filter.SortingMethod[0] switch
+            {
+                BookSortingAttribute.MostSelling => books.OrderByDescending(a => a.Sold),
+                BookSortingAttribute.PublishDate => books.OrderByDescending(a => a.PublishDate),
+                BookSortingAttribute.Rating => books.OrderByDescending(a => a.Rating),
+            };
+            foreach (var m in filter.SortingMethod.Skip(1))
+            {
+                orderedBooks = m switch
+                {
+                    BookSortingAttribute.MostSelling => orderedBooks.ThenByDescending(a => a.Sold),
+                    BookSortingAttribute.PublishDate => orderedBooks.ThenByDescending(a => a.PublishDate),
+                    BookSortingAttribute.Rating => orderedBooks.ThenByDescending(a => a.Rating),
+                };
+            }
+            books = orderedBooks;
+        }
         return Ok(books.Select(b => b.Id));
+    }
+    [HttpGet("GetCover")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCover([FromQuery] int bookId)
+    {
+        var book = await _dbContext.Books.FindAsync(bookId).ConfigureAwait(false);
+        if (book == null)
+        {
+            return StatusCode(StatusCodes.Status404NotFound,
+                new ErrorDto
+                {
+                    Description = "There is no book with the following Id.",
+                    Data = new Dictionary<string, object> { ["BookId"] = bookId }
+                });
+        }
+
+        var bookCover = _bookFileManager.GetFile(book.Id);
+        if (bookCover == null) { return NoContent(); }
+        var result = File(bookCover, "image/jpeg");
+        result.FileDownloadName = $"Book_{bookId}_Cover.jpg";
+        return result;
     }
 }

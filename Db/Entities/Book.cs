@@ -22,6 +22,7 @@ public class Book
     public DateTime PublishDate { get; set; }
     public BookGenre Genre { get; set; }
     public int Stock { get; set; }
+    public int Sold { get; set; }
     public ICollection<BookReview> Reviews { get; set; }
     public static void ConfigureEntity(EntityTypeBuilder<Book> b)
     {
@@ -29,6 +30,8 @@ public class Book
         b.Ignore(s => s.Rating);
         b.Property(s => s.Title)
             .IsUnicode()
+            .IsRequired();
+        b.Property(s => s.Sold)
             .IsRequired();
         b.Property(s => s.Isbn)
             .IsRequired();
@@ -65,6 +68,7 @@ public class Book
         b.HasCheckConstraint($"CK_{nameof(Book)}_{nameof(RatersCount)}", $"\"{nameof(RatersCount)}\" >= 0");
         b.HasCheckConstraint($"CK_{nameof(Book)}_{nameof(RatingSum)}", $"\"{nameof(RatingSum)}\" >= 0");
         b.HasCheckConstraint($"CK_{nameof(Book)}_{nameof(Stock)}", $"\"{nameof(Stock)}\" >= 0");
+        b.HasCheckConstraint($"CK_{nameof(Book)}_{nameof(Sold)}", $"\"{nameof(Sold)}\" >= 0");
     }
 
     public static async Task CreateSeedFiles(IServiceProvider sp, SeedingContext seedingContext)
@@ -95,9 +99,9 @@ public class Book
             await fileManager.SaveFile(b.Id, jpgStream).ConfigureAwait(false);
         }
 
-        foreach (var group in seedingContext.Books)
+        foreach (var book in seedingContext.Books)
         {
-            await GenerateBookPicture(group).ConfigureAwait(false);
+            await GenerateBookPicture(book).ConfigureAwait(false);
         }
     }
     public static void CreateSeed(SeedingContext ctx)
@@ -115,12 +119,15 @@ public class Book
                 Genre = rand.NextElement(genres),
                 Isbn = $"{rand.NextNumber(3)}-{rand.NextNumber(5)}-",
                 Language = rand.NextElement(languages),
-                PublishDate = DateTime.Now - TimeSpan.FromDays(rand.Next(2, 3000)),
+                PublishDate = DateTime.UtcNow - TimeSpan.FromDays(rand.Next(2, 3000)),
                 Title = rand.NextText(),
                 IsUsed = rand.NextBool(),
                 Price = rand.Next(2, 100),
-                Stock = rand.Next(300)
+                Stock = rand.Next(300),
+                Sold = 0
             };
+            book.Isbn += book.Id.ToString();
+            book.Isbn = book.Isbn.PadRight(13, '0');
             ctx.Books.Add(book);
         }
     }

@@ -47,6 +47,7 @@ public class OrderItem
                     UnitPrice = rand.Next(1, (int)book.Price),
                     Id = ctx.OrdersItems.Count + 1
                 };
+                book.Sold += item.Quantity;
                 order.Total += item.Quantity * item.UnitPrice;
                 ctx.OrdersItems.Add(item);
             }
