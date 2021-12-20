@@ -63,6 +63,7 @@ public class WishListController : ControllerBase
         var userId = this.GetUser()!.Id;
         var notOwnedItems = await existingItems
             .Where(i => i.CustomerId != userId)
+            .Select(i => i.Id)
             .ToArrayAsync()
             .ConfigureAwait(false);
         if (notOwnedItems.Length > 0)
