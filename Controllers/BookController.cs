@@ -31,7 +31,7 @@ public class BookController : ControllerBase
     [ProducesResponseType(typeof(int[]), StatusCodes.Status200OK)]
     public async Task<ActionResult<int[]>> GetAll([FromBody] GetAllDto dto)
     {
-        var userId = this.GetUser()!.Id;
+       // var userId = this.GetUser()!.Id;
         var books = await _dbContext.Books
             .Skip(dto.Offset)
             .Take(dto.Count)
@@ -228,6 +228,8 @@ public class BookController : ControllerBase
             {
                 BookSortingAttribute.MostSelling => books.OrderByDescending(a => a.Sold),
                 BookSortingAttribute.PublishDate => books.OrderByDescending(a => a.PublishDate),
+                                BookSortingAttribute.AddedDate => books.OrderByDescending(a => a.AddedDate),
+
                 BookSortingAttribute.Rating => books.OrderByDescending(a => a.Rating),
             };
             foreach (var m in filter.SortingMethod.Skip(1))
@@ -236,6 +238,8 @@ public class BookController : ControllerBase
                 {
                     BookSortingAttribute.MostSelling => orderedBooks.ThenByDescending(a => a.Sold),
                     BookSortingAttribute.PublishDate => orderedBooks.ThenByDescending(a => a.PublishDate),
+                                        BookSortingAttribute.AddedDate => orderedBooks.ThenByDescending(a => a.AddedDate),
+
                     BookSortingAttribute.Rating => orderedBooks.ThenByDescending(a => a.Rating),
                 };
             }

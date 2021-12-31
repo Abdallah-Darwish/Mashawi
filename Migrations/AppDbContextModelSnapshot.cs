@@ -48,6 +48,9 @@ namespace mashawi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
 

@@ -28,6 +28,7 @@ CREATE TABLE "Books" (
     "Description" text NOT NULL,
     "Language" smallint NOT NULL,
     "PublishDate" timestamp with time zone NOT NULL,
+    "AddedDate" timestamp with time zone NOT NULL,
     "Genre" smallint NOT NULL,
     "Stock" integer NOT NULL,
     "Sold" integer NOT NULL,

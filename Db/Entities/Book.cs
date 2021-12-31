@@ -20,10 +20,15 @@ public class Book
     public string Description { get; set; }
     public BookLanguage Language { get; set; }
     public DateTime PublishDate { get; set; }
+
+  public DateTime AddedDate { get; set; }
+
     public BookGenre Genre { get; set; }
     public int Stock { get; set; }
     public int Sold { get; set; }
     public ICollection<BookReview> Reviews { get; set; }
+
+
     public static void ConfigureEntity(EntityTypeBuilder<Book> b)
     {
         b.HasKey(s => s.Id);
@@ -58,6 +63,8 @@ public class Book
             .IsRequired()
             .HasConversion<byte>();
         b.Property(s => s.PublishDate)
+            .IsRequired();
+            b.Property(s => s.AddedDate)
             .IsRequired();
         b.Property(s => s.Genre)
             .IsRequired()
