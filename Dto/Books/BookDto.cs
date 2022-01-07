@@ -9,12 +9,12 @@ public class BookDto : BookMetadataDto
     public decimal Price { get; set; }
     public float RatersCount { get; set; }
     public float RatingSum { get; set; }
+    public float Rating{get;set;}
     public bool IsUsed { get; set; }
     public string Description { get; set; }
     public BookLanguage Language { get; set; }
     public DateTime PublishDate { get; set; }
-        public DateTime AddedDate { get; set; }
-
+    public DateTime AddedDate { get; set; }
     public BookGenre Genre { get; set; }
     public int Stock { get; set; }
 }

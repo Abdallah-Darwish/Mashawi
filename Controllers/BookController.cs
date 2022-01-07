@@ -216,11 +216,11 @@ public class BookController : ControllerBase
         }
         if (filter.MinRating != null)
         {
-            books = books.Where(b => b.Rating >= filter.MinRating);
+            books = books.Where(b =>(b.RatersCount==0?0: b.RatingSum/b.RatersCount) >= filter.MinRating);
         }
         if (filter.MaxRating != null)
         {
-            books = books.Where(b => b.RatersCount <= filter.MaxRating);
+             books = books.Where(b =>(b.RatersCount==0?0: (b.RatingSum/b.RatersCount)) <= filter.MaxRating);
         }
         if ((filter.SortingMethod?.Length ?? 0) > 0)
         {
@@ -228,8 +228,7 @@ public class BookController : ControllerBase
             {
                 BookSortingAttribute.MostSelling => books.OrderByDescending(a => a.Sold),
                 BookSortingAttribute.PublishDate => books.OrderByDescending(a => a.PublishDate),
-                                BookSortingAttribute.AddedDate => books.OrderByDescending(a => a.AddedDate),
-
+                BookSortingAttribute.AddedDate => books.OrderByDescending(a => a.AddedDate),
                 BookSortingAttribute.Rating => books.OrderByDescending(a => a.Rating),
             };
             foreach (var m in filter.SortingMethod.Skip(1))
@@ -238,13 +237,18 @@ public class BookController : ControllerBase
                 {
                     BookSortingAttribute.MostSelling => orderedBooks.ThenByDescending(a => a.Sold),
                     BookSortingAttribute.PublishDate => orderedBooks.ThenByDescending(a => a.PublishDate),
-                                        BookSortingAttribute.AddedDate => orderedBooks.ThenByDescending(a => a.AddedDate),
-
+                    BookSortingAttribute.AddedDate => orderedBooks.ThenByDescending(a => a.AddedDate),
                     BookSortingAttribute.Rating => orderedBooks.ThenByDescending(a => a.Rating),
                 };
             }
             books = orderedBooks;
         }
+        else{
+            books=books.OrderBy(b=>b.Id);
+        }
+        books = books
+            .Skip(filter.Offset)
+            .Take(filter.Count);
         return Ok(books.Select(b => b.Id));
     }
     [HttpGet("GetCover")]

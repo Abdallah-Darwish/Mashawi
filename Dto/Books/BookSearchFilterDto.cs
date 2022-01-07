@@ -2,7 +2,7 @@ using Mashawi.Db.Entities;
 using Mashawi.Dto.Authors;
 
 namespace Mashawi.Dto.Books;
-public enum BookSortingAttribute { MostSelling, Rating, PublishDate,AddedDate }
+public enum BookSortingAttribute { MostSelling, Rating, PublishDate, AddedDate }
 public class BookSearchFilterDto
 {
     public string? IsbnMask { get; set; }
