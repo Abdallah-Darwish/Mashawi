@@ -16,7 +16,58 @@ public class Author
 
     public static void CreateSeed(SeedingContext ctx)
     {
-        Random rand = new();
+        Author author1 = new(){
+            Id=1,
+            Name="Kristin Harmel"
+        };
+
+        Author author2=new(){
+            Id=2,
+            Name="Farah Heron"
+        };
+
+        Author author3 = new(){
+            Id=3,
+            Name="Sajni Patel"
+        };
+
+        Author author4 = new(){
+            Id=4,
+            Name="Sophie Cousens"
+        };
+
+        Author author5=new(){
+            Id=5,
+            Name="Casey McQuiston"
+        };
+
+        Author author6= new(){
+            Id=6,
+            Name="Talia Hibbert"
+        };
+
+        Author author7 = new(){
+            Id=7,
+            Name="Stephen King"
+        };
+
+        Author author8 = new(){
+            Id=8,
+            Name="J. R. R. Tolkien"
+        };
+
+        Author author9=new(){
+            Id=9,
+            Name="J.D. Salinger"
+        };
+        Author author10= new()      //5 books 
+        {
+            Id=10,
+            Name="William Golding"
+        };
+        List<Author> authors= new(){author1,author2,author3,author4,author5,author6,author7,author8,author9,author10};
+        ctx.Authors.AddRange(authors);
+        /*Random rand = new();
         var firstNames = new string[]
         {
             "Abdallah", "Hashim", "Shatha", "Jannah", "Malik", "Basel", "Al-Bara", "Mohammad", "Aya", "Issra",
@@ -36,6 +87,6 @@ public class Author
                 Name = $"{rand.NextElement(firstNames)} {rand.NextElement(lastNames)}"
             };
             ctx.Authors.Add(author);
-        }
+        }*/
     }
 }

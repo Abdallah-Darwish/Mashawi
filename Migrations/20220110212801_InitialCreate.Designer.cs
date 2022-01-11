@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace mashawi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211231204822_InitialCreate")]
+    [Migration("20220110212801_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,9 +142,10 @@ namespace mashawi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("BookId", "UserId")
+                        .IsUnique();
 
                     b.ToTable("BooksReviews");
 

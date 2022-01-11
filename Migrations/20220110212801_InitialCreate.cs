@@ -248,9 +248,10 @@ namespace mashawi.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BooksReviews_BookId",
+                name: "IX_BooksReviews_BookId_UserId",
                 table: "BooksReviews",
-                column: "BookId");
+                columns: new[] { "BookId", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BooksReviews_UserId",

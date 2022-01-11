@@ -1,3 +1,5 @@
+
+
 START TRANSACTION;
 
 CREATE TABLE "Authors" (
@@ -111,7 +113,7 @@ CREATE TABLE "OrdersItems" (
 
 CREATE INDEX "IX_Books_AuthorId" ON "Books" ("AuthorId");
 
-CREATE INDEX "IX_BooksReviews_BookId" ON "BooksReviews" ("BookId");
+CREATE UNIQUE INDEX "IX_BooksReviews_BookId_UserId" ON "BooksReviews" ("BookId", "UserId");
 
 CREATE INDEX "IX_BooksReviews_UserId" ON "BooksReviews" ("UserId");
 
@@ -134,6 +136,7 @@ CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
 CREATE INDEX "IX_WhishListItems_BookId" ON "WhishListItems" ("BookId");
 
 CREATE INDEX "IX_WhishListItems_CustomerId" ON "WhishListItems" ("CustomerId");
+
 
 
 COMMIT;

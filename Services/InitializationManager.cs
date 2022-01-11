@@ -27,6 +27,7 @@ namespace Mashawi.Services
             _serviceProvider = serviceProvider;
         }
 
+       
         public async Task RecreateDb()
         {
             var dirs = new[]
@@ -88,12 +89,30 @@ namespace Mashawi.Services
             NpgsqlConnection.ClearAllPools();
 
             SeedingContext seedingContext = new();
-            
+          /*  var _book = new Book{
+                    Id=1,
+                    Title="Testing title",
+                    Isbn="111111",
+                    AuthorId=1,
+                    Price=55,
+                    RatersCount=2,
+                    RatingSum=7,
+                    IsUsed=false,
+                    Description="THIS IS THE FIRST BOOK TO BE ADDED MANUALLY",
+                    Language=BookLanguage.English,
+                   PublishDate=DateTime.Today,
+                   AddedDate=DateTime.Today,
+                   Genre=BookGenre.Fantasy,
+                   Stock = 20,
+                   Sold=5
+        };
+        _dbContext.Books.Add(_book);*/
 
             Author.CreateSeed(seedingContext);
             OrderAddress.CreateSeed(seedingContext);
             Book.CreateSeed(seedingContext);
             User.CreateSeed(seedingContext);
+            BookReview.CreateSeed(seedingContext);
             Order.CreateSeed(seedingContext);
             OrderItem.CreateSeed(seedingContext);
             CartItem.CreateSeed(seedingContext);
@@ -121,6 +140,9 @@ namespace Mashawi.Services
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             await _dbContext.WhishListItems.AddRangeAsync(seedingContext.WhishListItems).ConfigureAwait(false);
+            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+
+            await _dbContext.BooksReviews.AddRangeAsync(seedingContext.BooksReviews).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
             await Book.CreateSeedFiles(_serviceProvider, seedingContext).ConfigureAwait(false);

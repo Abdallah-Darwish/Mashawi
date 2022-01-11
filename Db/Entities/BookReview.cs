@@ -30,10 +30,23 @@ public class BookReview
         b.Property(s => s.Rating)
             .IsRequired();
         b.HasCheckConstraint($"CK_{nameof(BookReview)}_{nameof(Rating)}", $"\"{nameof(Rating)}\" >= 0 AND \"{nameof(Rating)}\" <= 5");
+        b.HasIndex(s => new {s.BookId, s.UserId})
+            .IsUnique();
     }
     public static void CreateSeed(SeedingContext ctx)
     {
-        Random rand = new();
+        BookReview review111= new(){
+            Id=1,
+            BookId=1,
+            UserId=1,
+            Rating=5,
+            Content="This was a great read!!"
+        };
+        var _book =ctx.Books.FirstOrDefault(b=>b.Id==review111.BookId);
+        _book.RatersCount++;
+        _book.RatingSum+=review111.Rating;
+        ctx.BooksReviews.Add(review111);
+        /*Random rand = new();
         var users = ctx.Users.ToArray();
         foreach (var book in ctx.Books)
         {
@@ -52,6 +65,6 @@ public class BookReview
                 book.RatingSum += review.Rating;
                 ctx.BooksReviews.Add(review);
             }
-        }
+        }*/
     }
 }

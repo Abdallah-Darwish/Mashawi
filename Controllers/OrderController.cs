@@ -79,9 +79,9 @@ public class OrderController : ControllerBase
         }
         if (metadata)
         {
-            return Ok(_mapper.Map<OrderMetadataDto>(existingOrders));
+            return Ok(_mapper.ProjectTo<OrderMetadataDto>(existingOrders));
         }
-        return Ok(_mapper.Map<OrderDto>(existingOrders));
+        return Ok(_mapper.ProjectTo<OrderDto>(existingOrders));
     }
     [LoggedInFilter]
     [HttpPost("Create")]

@@ -53,7 +53,67 @@ public class User
     }
     public static void CreateSeed(SeedingContext ctx)
     {
-        Random rand = new();
+        OrderAddress address1 = new(){
+            Id=1,
+            City="Amman",
+            Neighborhood="Jubeiha",
+            Street="Hay Al-Rayyan",
+            BuildingNumber=13,
+            FlatNumber=1
+        };
+        User user1=new(){
+            Id=1,
+            AddressId=1,
+            Name="Ammar AlZeer",
+            Email="ammarzeer@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0799911996",
+            Role=UserRole.Admin
+        };
+        //ctx.OrdersAddresses.Add(address1);
+        //ctx.Users.Add(user1);
+
+        OrderAddress address2 = new(){
+            Id=2,
+            City="Irbid",
+            Neighborhood="Sama Al-Rousan",
+            Street="Aiz Ben Hayef",
+            BuildingNumber=10,
+            FlatNumber=1
+        };
+        User user2= new(){
+            Id=2,
+            AddressId=2,
+            Name="Housnie Al-Rousan",
+            Email="housnie@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0795664711",
+            Role=UserRole.Customer
+        };
+
+        OrderAddress address3=new(){
+            Id=3,
+            City="Amman",
+            Neighborhood="Dahiat Alamir Hasan",
+            Street="Omayah Al-Andalusi",
+            BuildingNumber=15,
+            FlatNumber=4
+        };
+        User user3=new(){
+            Id=3,
+            AddressId=3,
+            Name="Mohammad Faroun",
+            Email="faroun@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0775137187",
+            Role=UserRole.Admin   
+        };
+     
+        List<OrderAddress> addresses=new List<OrderAddress>{address1,address2,address3};
+        List<User>users=new List<User>{user1,user2,user3};
+        ctx.OrdersAddresses.AddRange(addresses);
+        ctx.Users.AddRange(users);
+      /*  Random rand = new();
         var firstNames = new string[]
         {
             "Abdallah", "Hashim", "Shatha", "Jannah", "Malik", "Basel", "Al-Bara", "Mohammad", "Aya", "Issra",
@@ -92,6 +152,6 @@ public class User
         {
             ctx.Users[i].Role = UserRole.Admin;
             e--;
-        }
+        }*/
     }
 }

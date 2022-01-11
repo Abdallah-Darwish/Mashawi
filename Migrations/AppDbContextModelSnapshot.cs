@@ -140,9 +140,10 @@ namespace mashawi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("BookId", "UserId")
+                        .IsUnique();
 
                     b.ToTable("BooksReviews");
 
