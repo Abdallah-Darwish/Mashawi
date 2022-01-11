@@ -27,7 +27,8 @@ public class CartItem
             .IsRequired();
 
         b.HasCheckConstraint($"CK_{nameof(CartItem)}_{nameof(Quantity)}", $"\"{nameof(Quantity)}\" >= 1");
-        b.HasIndex(b=>new {b.BookId,b.CustomerId}).IsUnique();
+        b.HasIndex(b => new { b.BookId, b.CustomerId })
+            .IsUnique();
     }
     public static void CreateSeed(SeedingContext ctx)
     {
