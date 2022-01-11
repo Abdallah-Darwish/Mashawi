@@ -9,6 +9,8 @@
   <ItemGroup>
     <None Remove="Resources\DbInitScript.sql" />
     <EmbeddedResource Include="Resources\DbInitScript.sql" />
+    <None Remove="Resources\BookCovers\**" />
+    <EmbeddedResource Include="Resources\BookCovers\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper.Collection.EntityFrameworkCore" Version="7.1.3" />

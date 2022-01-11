@@ -6,6 +6,6 @@ namespace Mashawi.Dto.BooksReviews;
 public class CreateBookReviewDto
 {
     public int BookId { get; set; }
-    public int Rating { get; set; }
+    public float Rating { get; set; }
     public string Content { get; set; }
 }

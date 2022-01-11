@@ -108,9 +108,130 @@ public class User
             Phone="0775137187",
             Role=UserRole.Admin   
         };
+
+        //ORDER ADDRESS AND USERS FOR BOOK REVIEWS
+        OrderAddress tempAddress1 = new(){
+            Id=4,
+            City="Zarqa",
+            Neighborhood="Al-Rusayfah ",
+            Street="Hamdan Al Basheer",
+            BuildingNumber=23,
+            FlatNumber=3
+        };
+        User temp1=new(){
+            Id=4,
+            AddressId=4,
+            Name="Abdullah Darwish",
+            Email="temp1@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0795294715",
+            Role=UserRole.Customer
+        };
+          OrderAddress tempAddress2 = new(){
+            Id=5,
+            City="Zarqa",
+            Neighborhood="Al-Rusayfah ",
+            Street="Hamdan Al Basheer",
+            BuildingNumber=23,
+            FlatNumber=3
+        };
+         User temp2=new(){
+            Id=5,
+            AddressId=5,
+            Name="Al-Bara'",
+            Email="temp2@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0790094715",
+            Role=UserRole.Customer
+        };
+          OrderAddress tempAddress3 = new(){
+            Id=6,
+            City="Zarqa",
+            Neighborhood="Al-Rusayfah ",
+            Street="Hamdan Al Basheer",
+            BuildingNumber=23,
+            FlatNumber=3
+        };
+        User temp3=new(){
+            Id=6,
+            AddressId=6,
+            Name="Gustello",
+            Email="temp3@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0790124717",
+            Role=UserRole.Customer
+        };
+          OrderAddress tempAddress4 = new(){
+            Id=7,
+            City="Zarqa",
+            Neighborhood="Al-Rusayfah ",
+            Street="Hamdan Al Basheer",
+            BuildingNumber=23,
+            FlatNumber=3
+        };
+        User temp4=new(){
+            Id=7,
+            AddressId=7,
+            Name="Tawfeeq",
+            Email="temp4@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0790093815",
+            Role=UserRole.Customer
+        };
+          OrderAddress tempAddress5 = new(){
+            Id=8,
+            City="Zarqa",
+            Neighborhood="Al-Rusayfah ",
+            Street="Hamdan Al Basheer",
+            BuildingNumber=23,
+            FlatNumber=3
+        };
+        User temp5=new(){
+            Id=8,
+            AddressId=8,
+            Name="Ibrahim",
+            Email="temp5@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0799294734",
+            Role=UserRole.Customer
+        };
+          OrderAddress tempAddress6 = new(){
+            Id=9,
+            City="Zarqa",
+            Neighborhood="Al-Rusayfah ",
+            Street="Hamdan Al Basheer",
+            BuildingNumber=23,
+            FlatNumber=3
+        };
+        User temp6=new(){
+            Id=9,
+            AddressId=9,
+            Name="Saif",
+            Email="temp6@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0790029715",
+            Role=UserRole.Customer
+        };
+          OrderAddress tempAddress7= new(){
+            Id=10,
+            City="Zarqa",
+            Neighborhood="Al-Rusayfah ",
+            Street="Hamdan Al Basheer",
+            BuildingNumber=23,
+            FlatNumber=3
+        };
+        User temp7=new(){
+            Id=10,
+            AddressId=10,
+            Name="Haitham",
+            Email="temp7@gmail.com",
+            PasswordHash=UserManager.HashPassword("123456"),
+            Phone="0797294715",
+            Role=UserRole.Customer
+        };
      
-        List<OrderAddress> addresses=new List<OrderAddress>{address1,address2,address3};
-        List<User>users=new List<User>{user1,user2,user3};
+        List<OrderAddress> addresses=new List<OrderAddress>{address1,address2,address3,tempAddress1,tempAddress2,tempAddress3,tempAddress4,tempAddress5,tempAddress6,tempAddress7};
+        List<User>users=new List<User>{user1,user2,user3,temp1,temp2,temp3,temp4,temp5,temp6,temp7};
         ctx.OrdersAddresses.AddRange(addresses);
         ctx.Users.AddRange(users);
       /*  Random rand = new();

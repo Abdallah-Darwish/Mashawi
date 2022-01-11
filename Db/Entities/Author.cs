@@ -65,7 +65,22 @@ public class Author
             Id=10,
             Name="William Golding"
         };
-        List<Author> authors= new(){author1,author2,author3,author4,author5,author6,author7,author8,author9,author10};
+
+        Author author11 =new()
+        {
+            Id=11,
+            Name="Marisa Noelle"
+        };
+        Author author12=new()
+        {
+            Id=12,
+            Name="M.L. Blackbird"
+        };
+        Author author13 =new(){
+            Id=13,
+            Name="Tom Clavin"
+        };
+        List<Author> authors= new(){author1,author2,author3,author4,author5,author6,author7,author8,author9,author10,author11,author12,author13};
         ctx.Authors.AddRange(authors);
         /*Random rand = new();
         var firstNames = new string[]

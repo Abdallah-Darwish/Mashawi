@@ -1,10 +1,11 @@
+using Mashawi.Resources;
 using Mashawi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SkiaSharp;
 namespace Mashawi.Db.Entities;
 public enum BookLanguage { Arabic, English }
-public enum BookGenre { Fantasy, Romance,HistoricalFiction,Horror,Classics,Fiction }
+public enum BookGenre { Fantasy, Romance,Historical,Horror,Classics,Fiction }
 public class Book
 {
     public int Id { get; set; }
@@ -78,7 +79,7 @@ public class Book
 
     public static async Task CreateSeedFiles(IServiceProvider sp, SeedingContext seedingContext)
     {
-        using SKPaint paint = new()
+      /*  using SKPaint paint = new()
         {
             Color = SKColors.Red,
             Style = SKPaintStyle.Fill,
@@ -88,19 +89,20 @@ public class Book
             TextSize = 10,
             StrokeWidth = 10
         };
-        Random rand = new();
+        Random rand = new();*/
         var fileManager = sp.GetRequiredService<BookFileManager>();
 
         async Task GenerateBookPicture(Book b)
         {
-            using SKBitmap bmp = new(200, 200);
+           /* using SKBitmap bmp = new(200, 200);
             using (SKCanvas can = new(bmp))
             {
                 can.Clear(new SKColor((uint)rand.Next(100, int.MaxValue)));
                 can.Flush();
             }
             using var jpgData = bmp.Encode(SKEncodedImageFormat.Jpeg, 100);
-            await using var jpgStream = jpgData.AsStream();
+            await using var jpgStream = jpgData.AsStream();*/
+            using var jpgStream = AppResourcesManager.GetStream($"BookCovers.{b.Id}.jpg");
             await fileManager.SaveFile(b.Id, jpgStream).ConfigureAwait(false);
         }
 
@@ -115,7 +117,7 @@ public class Book
             Id=1,
             AuthorId=1,
             Title="The Forest of Vanishing Stars",
-            Genre=BookGenre.HistoricalFiction,
+            Genre=BookGenre.Historical,
             Language=BookLanguage.English,
             Isbn="9781638080442",
             IsUsed=false,
@@ -330,8 +332,97 @@ public class Book
             Description="\"I was standing up, pressed back against the wall, trying not to breathe. I got there in the one movement my body made. My body had many hairs on legs and belly and chest and head, and each had its own life; each inherited a hundred thousand years of loathing and fear for things that scuttle or slide or crawl.\" from Free Fall"
          };
 
-       
-        List<Book> books= new(){book11,book21,book12,book13,book14,book15,book16,book17,book18,book19,book110,book210,book310,book410};
+         Book book111=new(){
+            Id=15,
+            AuthorId=11,
+            Title="The Unraveling of Luna Forester",
+            Genre=BookGenre.Horror,
+            Language=BookLanguage.English,
+            Isbn="9781916893221",
+            IsUsed=true,
+            Price=7.59m,
+            Stock=10,
+            PublishDate=new DateTime(2021,12,9).ToUniversalTime(),
+            AddedDate=DateTime.UtcNow.Date.AddDays(-13),
+            Sold=0,
+            Description="MATTHEW HAS ALWAYS PROTECTED LUNA’S SECRET.\nNOW HE MUST PROTECT HER LIFE.\nWhen his best friend Luna is found catatonic after a devastating house fire, Matthew begins to fall apart.\n\"Take care of them, Matthew.\"\n\"Always.\"\n\"Protect my secret.\"\n\"Of course.\"\nThat’s the promise he made to her only three nights ago. A solemn vow to protect their large found family of humans and supernatural creatures alike.\nFated to love her for the rest of his life, and unwilling to break his solemn vow, Matthew knows the only person who can help Luna is her grandmother. Through the woods they must go, just like a fairytale. But the forest is filled with deadly peril: poisonous black moss, chimeras, and worst of all, members of their family who don't want them to continue.\nAs they are picked off one by one, Matthew races to get Luna to safety, all the time doubting everything he thought was true.\nCan Matthew untangle the twisted threads of Luna’s secret before he himself unravels?"
+         };
+         Book book112=new(){
+            Id=16,
+            AuthorId=12,
+            Title="A Wish Too Dark And Kind",
+            Genre=BookGenre.Horror,
+            Language=BookLanguage.English,
+            Isbn="9781737019213",
+            IsUsed=true,
+            Price=9.73m,
+            Stock=10,
+            PublishDate=new DateTime(2021,11,1).ToUniversalTime(),
+            AddedDate=DateTime.UtcNow.Date.AddDays(-14),
+            Sold=0,
+            Description="Among the immortals that inhabit our world, Arnaud Demeure is known as the man who can fulfill your one true wish or who can also conjure your worst nightmares.\nEight invitations are sent to eight immortals, and when Arnaud Demeure hosts a party, no one refuses his request. Why have they been summoned? Is it for a celebration or does a sinister fate await them? After all, in the ways of Magick, a party can also be a ritual to end the world.\nAs the mystery deepens, the attendees must overcome their personal grudges to unravel the threads of Demeure's grand plan that has been centuries in the making. But, with one of the guests secretly working with their host to sabotage the group's every move, it seems impossible to look behind the curtain to learn Demeure's true intentions.\nWith each guest hiding dark secrets and darker intentions, will they be able to uncover Demeure's mysterious motives or will the party prove to be the deadly nightmare that they each fear?"
+         };
+           Book book510=new(){
+            Id=17,
+            AuthorId=10,
+            Title="Darkness Visible",
+            Genre=BookGenre.Fiction,
+            Language=BookLanguage.English,
+            Isbn="9780156239318",
+            IsUsed=true,
+            Price=3.70m,
+            Stock=10,
+            PublishDate=new DateTime(1999,2,15).ToUniversalTime(),
+            AddedDate=DateTime.UtcNow.Date.AddDays(-15),
+            Sold=0,
+            Description="A dazzlingly dark novel by the Nobel Laureate.\nAt the height of the London blitz, a naked child steps out of an all-consuming fire. Miraculously saved yet hideously scarred, tormented at school and at work, Matty becomes a wanderer, a seeker after some unknown redemption. Two more lost children await him: twins as exquisite as they are loveless. Toni dabbles in political violence, Sophy in sexual tyranny. As Golding weaves their destinies together, as he draws them toward a final conflagration, his book lights up both the inner and outer darknesses of our time."
+           };
+            Book book610=new(){
+            Id=18,
+            AuthorId=10,
+            Title="The Double Tongue",
+            Genre=BookGenre.Fiction,
+            Language=BookLanguage.English,
+            Isbn="9780374143299",
+            IsUsed=true,
+            Price=3.79m,
+            Stock=10,
+            PublishDate=new DateTime(1999,10,1).ToUniversalTime(),
+            AddedDate=DateTime.UtcNow.Date.AddDays(-15),
+            Sold=0,
+            Description="The Double Tongue is William Golding's last and perhaps most superbly imaginative novel. It is a fictional memoir of an aged prophetess at Delphi, the most sacred oracle of ancient Greece, just prior to Greece's domination by the Roman Empire. As a young girl, Arieka is ugly, unconventional, a source of great shame to her uppity parents, who fear they'll never marry her off. But she is saved by Ionides, the High Priest of the Delphic temple, who detects something of a seer (and a friend) in her and whisks her off to the shrine to become the Pythia - the earthly voice of the god Apollo. Arieka has now spent a lifetime at the mercy of a god, a priest, and her devotees, and has witnessed firsthand the decay of Delphi's fortunes and its influence in the world. Her reflections on the mysteries of the oracle, which her own weird gifts embody, are matched by her feminine insight into the human frailties of the High Priest himself, a true Athenian with a wicked sense of humor, whose intriguing against the Romans brings about humiliation and disaster. This extraordinary short novel, left in draft at the author's death in 1993, is a psychological and historical triumph. Golding has created a vivid and comic picture of ancient Greek society as well as an absolutely convincing portrait of a woman's experience, something rare in the Golding oeuvre. Arieka the Pythia is one of his finest creations.\nLeft in draft at the author's death in 1993, this extraordinary short novel is a psychological and historical triumph. An aged prophetess at Delphi, the most sacred oracle in ancient Greece, looks back over her strange life as the Pythia, the voice of the god Apollo. Golding was the author of Lord of the Flies, and a Nobel Laureate."
+            };
+            Book book710=new(){
+            Id=19,
+            AuthorId=10,
+            Title="The Paper Men",
+            Genre=BookGenre.Fiction,
+            Language=BookLanguage.English,
+            Isbn="9780156708005",
+            IsUsed=true,
+            Price=3.74m,
+            Stock=10,
+            PublishDate=new DateTime(1999,12,1).ToUniversalTime(),
+            AddedDate=DateTime.UtcNow.Date.AddDays(-16),
+            Sold=0,
+            Description="English novelist Wilfred Barclay, who has known fame, success, and fortune, is in crisis. He faces a drinking problem slipping over the borderline into alcoholism, a dead marriage, and the incurable itch of middle age lust. But the final, unbearable irritation is American Professor of English Literature Rick L. Tucker, who is implacable in his determinition to become The Barclay Man: authorized biographer, editor of the posthumous papers and the recognized authority."
+            };
+            Book book113=new(){
+            Id=20,
+            AuthorId=13,
+            Title="Lightning Down: A World War II Story of Survival",
+            Genre=BookGenre.Historical,
+            Language=BookLanguage.English,
+            Isbn="9781250151261",
+            IsUsed=true,
+            Price=14.99m,
+            Stock=10,
+            PublishDate=new DateTime(2021,11,2).ToUniversalTime(),
+            AddedDate=DateTime.UtcNow.Date.AddDays(-17),
+            Sold=0,
+            Description="On August 13, 1944, Joe Moser set off on his forty-fourth combat mission over occupied France. Soon, he would join almost 170 other Allied airmen as prisoners in Buchenwald, one of the most notorious and deadly of Nazi concentration camps. Tom Clavin's Lightning Down tells this largely untold and riveting true story.\nMoser was just twenty-two years old, a farm boy from Washington State who fell in love with flying. During the War he realized his dream of piloting a P-38 Lightning, one of the most effective weapons the Army Air Corps had against the powerful German Luftwaffe. But on that hot August morning he had to bail out of his damaged, burning plane. Captured immediately, Moser’s journey into hell began.\nMoser and his courageous comrades from England, Canada, New Zealand, and elsewhere endured the most horrific conditions during their imprisonment... until the day the orders were issued by Hitler himself to execute them. Only a most desperate plan would save them.\nThe page-turning momentum of Lightning Down is like that of a thriller, but the stories of imprisoned and brutalized airmen are true and told in unforgettable detail, led by the distinctly American voice of Joe Moser, who prays every day to be reunited with his family.\nLightning Down is a can’t-put-it-down inspiring saga of brave men confronting great evil and great odds against survival."
+            };
+        List<Book> books= new(){book11,book21,book12,book13,book14,book15,book16,book17,book18,book19,book110,book210,book310,book410,book111,book112,book510,book610,book710,book113};
         ctx.Books.AddRange(books);
 
         

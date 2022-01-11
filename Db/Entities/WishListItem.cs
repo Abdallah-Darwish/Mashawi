@@ -22,6 +22,7 @@ public class WishListItem
             .HasForeignKey(s => s.BookId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+         b.HasIndex(s=>new {s.BookId,s.CustomerId}).IsUnique();
     }
     public static void CreateSeed(SeedingContext ctx)
     {
