@@ -85,13 +85,13 @@ public class CartController : ControllerBase
         var user = this.GetUser()!;
         CartItem entity = new()
         {
-            CustomerId = user.Id,
-            BookId = dto.BookId,
-            Quantity = dto.Quantity
+            Quantity = dto.Quantity,
+            Book = await _dbContext.Books.FindAsync(dto.BookId).ConfigureAwait(false),
+            Customer = await _dbContext.Users.FindAsync(user.Id).ConfigureAwait(false)
         };
         await _dbContext.CartsItems.AddAsync(entity).ConfigureAwait(false);
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-        return CreatedAtAction(nameof(Get), new { ids = new int[] { entity.Id } }, _mapper.Map<BookReviewDto>(entity));
+        return CreatedAtAction(nameof(Get), new { ids = new int[] { entity.Id } }, _mapper.Map<CartItemDto>(entity));
     }
     [LoggedInFilter]
     [HttpDelete("Delete")]
