@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SkiaSharp;
 namespace Mashawi.Db.Entities;
 public enum BookLanguage { Arabic, English }
-public enum BookGenre { Fantasy, Romance,Historical,Horror,Classics,Fiction }
+public enum BookGenre { Fantasy, Romance, Historical, Horror, Classics, Fiction }
 public class Book
 {
     public int Id { get; set; }

@@ -35,7 +35,7 @@ public class Order
     public static void CreateSeed(SeedingContext ctx)
     {
         Random rand = new();
-        int id = 1;
+        int id = 30;        // to not affect the user addresses for now
         foreach (var user in ctx.Users)
         {
             int ordersCount = rand.Next(5);
