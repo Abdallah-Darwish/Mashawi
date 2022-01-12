@@ -154,4 +154,13 @@ public class WishListController : ControllerBase
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return NoContent();
     }
+    [LoggedInFilter]
+    [HttpGet("IsInWishList")]
+    public async Task<ActionResult<bool>> IsInWishList([FromQuery] int bookId)
+    {
+        var user = this.GetUser()!;
+        return await _dbContext.WhishListItems
+            .AnyAsync(wi => wi.CustomerId == user.Id && wi.BookId == bookId)
+            .ConfigureAwait(false);
+    }
 }
