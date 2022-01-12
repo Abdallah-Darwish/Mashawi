@@ -141,7 +141,7 @@ public class BookReviewController : ControllerBase
         }
         if (update.Rating != null)
         {
-            var book = await _dbContext.Books.FindAsync(review.Book.Id).ConfigureAwait(false);
+            var book = await _dbContext.Books.FindAsync(review.BookId).ConfigureAwait(false);
             book.RatingSum += update.Rating.Value - review.Rating;
             review.Rating = update.Rating.Value;
         }
