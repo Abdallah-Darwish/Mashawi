@@ -147,4 +147,16 @@ public class CartController : ControllerBase
         await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         return NoContent();
     }
+
+    [LoggedInFilter]
+    [HttpGet("GetInfo")]
+    public async Task<ActionResult<CartDto>> GetInfo()
+    {
+        var user = this.GetUser()!;
+        CartDto cart = new()
+        {
+            Total = _dbContext.CartsItems.Where(ci => ci.CustomerId == user.Id).Sum(ci => ci.Book.Price * ci.Quantity)
+        };
+        return Ok(cart);
+    }
 }
