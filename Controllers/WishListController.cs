@@ -163,4 +163,28 @@ public class WishListController : ControllerBase
             .AnyAsync(wi => wi.CustomerId == user.Id && wi.BookId == bookId)
             .ConfigureAwait(false);
     }
+    [LoggedInFilter]
+    [HttpGet("Add_Remove")]
+    public async Task<ActionResult> Add_Remove([FromQuery]int bookId)
+    {
+         var user = this.GetUser()!;
+        var InWishListItem=await _dbContext.WhishListItems
+            .FirstOrDefaultAsync(wi => wi.CustomerId == user.Id && wi.BookId == bookId)
+            .ConfigureAwait(false);
+        if(InWishListItem!=null)
+        {
+             _dbContext.WhishListItems.Remove(InWishListItem);
+        }
+        else
+        {
+            InWishListItem=new(){
+                CustomerId= user.Id,
+                BookId=bookId,
+            };
+        }
+        await _dbContext.WhishListItems.AddAsync(InWishListItem).ConfigureAwait(false);
+        await _dbContext.SaveChangesAsync();
+        return Ok();
+
+    }
 }

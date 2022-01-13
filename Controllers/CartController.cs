@@ -157,6 +157,6 @@ public class CartController : ControllerBase
         {
             Total = _dbContext.CartsItems.Where(ci => ci.CustomerId == user.Id).Sum(ci => ci.Book.Price * ci.Quantity)
         };
-        return Ok(cart);
+        return Ok(cart);//cart.Total
     }
 }

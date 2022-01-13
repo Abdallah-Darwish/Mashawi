@@ -31,12 +31,12 @@ namespace Mashawi.Services.UserSystem
         /// </summary>
         public static string HashPassword(string password)
         {
-            // var bytes = System.Text.Encoding.Unicode.GetBytes(password);
-            // var sha1 = new SHA1CryptoServiceProvider();
-            // var sha1data = sha1.ComputeHash(bytes);
-            // var str = System.Text.Encoding.Unicode.GetString(sha1data);
-            // return str;
-            return password;
+            var bytes = System.Text.Encoding.Unicode.GetBytes(password);
+            var sha1 = System.Security.Cryptography.SHA1.Create();
+            var sha1data = sha1.ComputeHash(bytes);
+            var str = System.Text.Encoding.Unicode.GetString(sha1data);
+            return str;
+            //return password;
         }
 
         private readonly AppDbContext _dbContext;
