@@ -181,8 +181,9 @@ public class WishListController : ControllerBase
                 CustomerId= user.Id,
                 BookId=bookId,
             };
+          await _dbContext.WhishListItems.AddAsync(InWishListItem).ConfigureAwait(false);
+
         }
-        await _dbContext.WhishListItems.AddAsync(InWishListItem).ConfigureAwait(false);
         await _dbContext.SaveChangesAsync();
         return Ok();
 
